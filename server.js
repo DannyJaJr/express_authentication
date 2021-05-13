@@ -5,6 +5,7 @@ const app = express();
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('./config/ppConfig');
+const isLoggedIn = require('./middleware/isLoggedIn');
 
 
 const SECRET_SESSION = process.env.SECRET_SESSION;
@@ -18,8 +19,7 @@ app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
-app.use(passport.initialize());      // Initialize passport
-app.use(passport.session());         // Add a session
+
 
 
 
@@ -32,6 +32,9 @@ app.use(session({
 }));
 
 app.use(flash());            // flash middleware
+
+app.use(passport.initialize());      // Initialize passport
+app.use(passport.session());         // Add a session
 
 //a middle to store flash messages and user on res.locals
 
