@@ -30,7 +30,7 @@ app.use(flash());            // flash middleware
 
 
 //a middle to store flash messages and user on res.locals
-
+//currrentuser is used as currentUser for the back end 
 app.use((req, res, next) => {
   console.log(res.locals);
   res.locals.alerts = req.flash();
@@ -47,11 +47,19 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/profile', (req, res) => {
-  res.render('profile');
-});
+// app.get('/profile', (req, res) => {
+//   res.render('profile');
+// });
 
 app.use('/auth', require('./controllers/auth'));
+
+//  a GET route to /profile and include isLoggedIn 
+//middleware to check to see if user is logged in beforehand inside of server.js
+app.get('/profile', isLoggedIn, (req, res) => {
+  const { id, name, email } = req.user.get(); 
+  res.render('profile', { id, name, email });
+});
+
 
 
 
