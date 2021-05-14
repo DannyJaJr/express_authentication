@@ -29,6 +29,10 @@ app.use(session({
 app.use(flash());            // flash middleware
 
 
+app.use(passport.initialize());      // Initialize passport
+app.use(passport.session());         // Add a session
+
+
 //a middle to store flash messages and user on res.locals
 //currrentuser is used as currentUser for the back end 
 app.use((req, res, next) => {
@@ -39,8 +43,6 @@ app.use((req, res, next) => {
 })
 
 
-app.use(passport.initialize());      // Initialize passport
-app.use(passport.session());         // Add a session
 
 
 app.get('/', (req, res) => {
@@ -51,7 +53,7 @@ app.get('/', (req, res) => {
 //   res.render('profile');
 // });
 
-app.use('/auth', require('./controllers/auth'));
+
 
 //  a GET route to /profile and include isLoggedIn 
 //middleware to check to see if user is logged in beforehand inside of server.js
@@ -61,7 +63,7 @@ app.get('/profile', isLoggedIn, (req, res) => {
 });
 
 
-
+app.use('/auth', require('./controllers/auth'));
 
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => {
